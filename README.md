@@ -35,21 +35,11 @@ Given a biexciton system with the ground, exciton and the biexciton states repre
 $\dot\rho(t) = -i[\hat{H}_S(t),\rho(t)] + \int_0^t \hat{\mathcal{K}}(t,t') \rho(t') dt'$
 
 where,
-
-                                      [$\Delta$   -$\Omega$/2   0]
-*   system Hamiltonian: $\hat{H}_S$ = [-$\Omega$/2   -$E_b$/2   -$\Omega$/2 ]
-                                      [0   -$\Omega$/2   -$\Delta$ ]
-
-*   coupling matrix: $\hat{S}$ =
+                                                                  
+*   system Hamiltonian: $\hat{H}_S = \Delta(t) * M_z - \Omega(t) * M_x  - 0.5 * E_b * M_{11}$ 
+                                    
+*   coupling matrix: $\hat{S} = \operatorname{diag}(0,1,2)$ 
   
-$$
-\begin{bmatrix}
-0 & 0 & 0 \\
-0 & 1 & 0 \\
-0 & 0 & 2
-\end{bmatrix}
-$$
-
 * $\hat{\mathcal{K}}(t,t') \rho(t') = i[\hat{S}, \{i c(t,t')\hat{U}(t,t')\hat{S}\rho(t')\} + \{H.c.\}]$
 
     *  time-ordered unitary propagator : $\hat{U} = \mathcal{T} e^{-i\int_{t'}^t\hat{H}_S dt''}$
@@ -83,7 +73,7 @@ Let the neural network take time instance $t$ as the input and output the wavefu
 *   Input : $t \in ℝ$
 *   Output : $NN(\textbf{w}, t) \in ℝ^6$
 
-If $\psi(t)$ = $\begin{bmatrix} c_0(t) \\ c_1(t) \\ c_2(t) \end{bmatrix}$,   ${c_0, c_1, c_2} \in ℂ$
+If $\psi(t)$ = $[c_0(t) \hspace{0.1cm} c_1(t) \hspace{0.1cm} c_2(t) ]^T$,   ${c_0, c_1, c_2} \in ℂ$
 
 then,
 
@@ -95,11 +85,11 @@ then,
 
 From these 6 outputs we can construct $\psi$ as,
 
-$\psi(NN(\textbf{w},t)) = \begin{pmatrix}
+$\psi(NN(\textbf{w},t))$ = $$\begin{pmatrix}
 NN(\bf{w}, t)[0] + i\ NN(\textbf{w}, t)[3]\\
 NN(\textbf{w}, t)[1] + i\ NN(\textbf{w}, t)[4]\\
 NN(\textbf{w}, t)[1] + i\ NN(\textbf{w}, t)[5]
-\end{pmatrix}$
+\end{pmatrix}$$
 
 and then finally obtain the density matrix,
 
