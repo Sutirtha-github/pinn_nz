@@ -37,16 +37,16 @@ $\dot\rho(t) = -i[\hat{H}_S(t),\rho(t)] + \int_0^t \hat{\mathcal{K}}(t,t') \rho(
 where,
 
 *   system Hamiltonian: $\hat{H}_S = \begin{pmatrix}
-\Delta & -\Omega/2 & 0 \\
--\Omega/2 & -E_b/2 & -\Omega/2 \\
-0 & -\Omega/2 & -\Delta
-\end{pmatrix}$
+      \Delta & -\Omega/2 & 0 \\
+      -\Omega/2 & -E_b/2 & -\Omega/2 \\
+      0 & -\Omega/2 & -\Delta
+      \end{pmatrix}$
 
 *   coupling matrix: $\hat{S} = \begin{pmatrix}
-0 & 0 & 0 \\
-0 & 1 & 0 \\
-0 & 0 & 2
-\end{pmatrix}$
+                     0 & 0 & 0 \\
+                     0 & 1 & 0 \\
+                     0 & 0 & 2
+                     \end{pmatrix}$
 
 * $\hat{\mathcal{K}}(t,t') \rho(t') = i[\hat{S}, \{i c(t,t')\hat{U}(t,t')\hat{S}\rho(t')\} + \{H.c.\}]$
 
@@ -81,11 +81,11 @@ Let the neural network take time instance $t$ as the input and output the wavefu
 *   Input : $t \in ℝ$
 *   Output : $NN(\textbf{w}, t) \in ℝ^6$
 
-If $\psi(t) = \begin{pmatrix}
+If $\psi(t)$ = $$\begin{bmatrix}
 c_0(t) \\
 c_1(t) \\
 c_2(t)
-\end{pmatrix}, \{c_0, c_1, c_2\} \in ℂ$
+\end{bmatrix}$$,   ${c_0, c_1, c_2} \in ℂ$
 
 then,
 
@@ -98,7 +98,7 @@ then,
 From these 6 outputs we can construct $\psi$ as,
 
 $\psi(NN(\textbf{w},t)) = \begin{pmatrix}
-NN(\textbf{w}, t)[0] + i\ NN(\textbf{w}, t)[3]\\
+NN(\bf{w}, t)[0] + i\ NN(\textbf{w}, t)[3]\\
 NN(\textbf{w}, t)[1] + i\ NN(\textbf{w}, t)[4]\\
 NN(\textbf{w}, t)[1] + i\ NN(\textbf{w}, t)[5]
 \end{pmatrix}$
