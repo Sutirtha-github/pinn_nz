@@ -44,13 +44,13 @@ $\dot\rho(t) = -i[\hat{H}_S(t),\rho(t)] + \int_0^t \hat{\mathcal{K}}(t,t') \rho(
 
 where,
 
-*   system Hamiltonian: $\hat{H}_S$ = '''math \begin{bmatrix} \Delta & -\Omega/2 & 0 \\ -\Omega/2 & -E_b/2 & -\Omega/2 \\ 0 & -\Omega/2 & -\Delta \end{bmatrix}'''
+*   system Hamiltonian: $\hat{H}_S$ = $$ \begin{bmatrix} \Delta & -\Omega/2 & 0 \\ -\Omega/2 & -E_b/2 & -\Omega/2 \\ 0 & -\Omega/2 & -\Delta \end{bmatrix} $$
 
-*   coupling matrix: $\hat{S} = \begin{pmatrix}
+*   coupling matrix: $\hat{S}$ = $$\begin{pmatrix}
                      0 & 0 & 0 \\
                      0 & 1 & 0 \\
                      0 & 0 & 2
-                     \end{pmatrix}$
+                     \end{pmatrix}$$
 
 * $\hat{\mathcal{K}}(t,t') \rho(t') = i[\hat{S}, \{i c(t,t')\hat{U}(t,t')\hat{S}\rho(t')\} + \{H.c.\}]$
 
