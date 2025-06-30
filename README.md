@@ -73,7 +73,7 @@ Let the neural network take time instance $t$ as the input and output the wavefu
 *   Input : $t \in ℝ$
 *   Output : $NN(\textbf{w}, t) \in ℝ^6$
 
-If $\psi(t)$ = $[c_0(t) \hspace{0.5cm} c_1(t) \hspace{0.5cm} c_2(t) ]^T$,  \hspace{1cm} ${c_0, c_1, c_2} \in ℂ$
+If $\psi(t)$ = $[c_0(t) \hspace{0.5cm} c_1(t) \hspace{0.5cm} c_2(t) ]^T$,  $\hspace{1cm} {c_0, c_1, c_2} \in ℂ$
 
 then,
 
@@ -85,11 +85,11 @@ then,
 
 From these 6 outputs we can construct $\psi$ as,
 
-$\psi(NN(\textbf{w},t))$ = [$NN(\bf{w}, t)[0] + i NN(\textbf{w}, t)[3]$ ]
+$\psi(NN(\textbf{w},t)) = [ NN(\bf{w}, t)[0] + i NN(\textbf{w}, t)[3] ]$
 
-[$\hspace{1cm} NN(\textbf{w}, t)[1] + i NN(\textbf{w}, t)[4]$ ]
+$\hspace{1cm} [NN(\textbf{w}, t)[1] + i NN(\textbf{w}, t)[4] ]$
 
-[$\hspace{1cm} NN(\textbf{w}, t)[1] + i NN(\textbf{w}, t)[5]$ ]
+$\hspace{1cm} [ NN(\textbf{w}, t)[1] + i NN(\textbf{w}, t)[5] ]$
 
 
 and then finally obtain the density matrix,
