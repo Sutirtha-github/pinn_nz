@@ -85,11 +85,11 @@ then,
 
 From these 6 outputs we can construct $\psi$ as,
 
-$\psi(NN(\textbf{w},t)) = [ NN(\bf{w}, t)[0] + i * NN(\textbf{w}, t)[3] ]$
+$\psi(NN(\textbf{w},t)) = [\hspace{.1cm} NN(\bf{w}, t)[0] + i * NN(\textbf{w}, t)[3] \hspace{.1cm}]$
 
-$\hspace{2.5cm} [NN(\textbf{w}, t)[1] + i * NN(\textbf{w}, t)[4] ]$
+$\hspace{2.7cm} [\hspace{.1cm}NN(\textbf{w}, t)[1] + i * NN(\textbf{w}, t)[4] \hspace{.1cm}]$
 
-$\hspace{2.5cm} [ NN(\textbf{w}, t)[1] + i * NN(\textbf{w}, t)[5] ]$
+$\hspace{2.7cm} [\hspace{.1cm} NN(\textbf{w}, t)[1] + i * NN(\textbf{w}, t)[5] \hspace{.1cm}]$
 
 
 and then finally obtain the density matrix,
