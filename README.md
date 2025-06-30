@@ -2,15 +2,6 @@
 
 <br><br>
 
-s= $$
-\begin{bmatrix}
-1 & 2 & 3 \\
-4 & 5 & 6 \\
-7 & 8 & 9
-\end{bmatrix}
-$$
-
-
 ## Theory
 
 <br>
@@ -25,9 +16,9 @@ where,
 
 *   $f^{(k)}(x)$ denotes the k-th derivative of $f(x)$  i.e. $f^{(k)}(x) = \frac{d^k}{dx^k}f(x)$,   $k = 1,2,...,n$
 
-* $g(x)$ is some given arbitrary function,
+*   $g(x)$ is some given arbitrary function,
 
-* $\lambda, a$ are constant parameters,
+*   $\lambda, a$ are constant parameters,
 
 *   and , $K(x,s)$ is the kernel function that typically encodes the relationship between the present and past states.
 
@@ -45,7 +36,9 @@ $\dot\rho(t) = -i[\hat{H}_S(t),\rho(t)] + \int_0^t \hat{\mathcal{K}}(t,t') \rho(
 
 where,
 
-*   system Hamiltonian: $\hat{H}_S$ = $$ \begin{bmatrix} $\Delta$ & -$\Omega$/2 & 0 \\ -$\Omega$/2 & -$E_b$/2 & -$\Omega$/2 \\ 0 & -$\Omega$/2 & -$\Delta$ \end{bmatrix} $$
+                                      [$\Delta$   -$\Omega$/2   0]
+*   system Hamiltonian: $\hat{H}_S$ = [-$\Omega$/2   -$E_b$/2   -$\Omega$/2 ]
+                                      [0   -$\Omega$/2   -$\Delta$ ]
 
 *   coupling matrix: $\hat{S}$ =
   
