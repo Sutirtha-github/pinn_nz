@@ -36,7 +36,7 @@ $\dot\rho(t) = -i[\hat{H}_S(t),\rho(t)] + \int_0^t \hat{\mathcal{K}}(t,t') \rho(
 
 where,
                                                                   
-*   system Hamiltonian: $\hat{H}_s = \Delta(t) * M_z - 0.5 * \Omega(t) * Mx - 0.5 * E_b * M_{11}$
+*   system Hamiltonian: $\hat{H}_s = \Delta(t) * M_z - 0.5 * \Omega(t) * M_x - 0.5 * E_b * M$
                                     
 *   coupling matrix: $\hat{S} = diag(0,1,2)$ 
   
@@ -85,11 +85,11 @@ then,
 
 From these 6 outputs we can construct $\psi$ as,
 
-$\psi(NN(\textbf{w},t)) = [ NN(\bf{w}, t)[0] + i NN(\textbf{w}, t)[3] ]$
+$\psi(NN(\textbf{w},t)) = [ NN(\bf{w}, t)[0] + i * NN(\textbf{w}, t)[3] ]$
 
-$\hspace{1cm} [NN(\textbf{w}, t)[1] + i NN(\textbf{w}, t)[4] ]$
+$\hspace{2.5cm} [NN(\textbf{w}, t)[1] + i * NN(\textbf{w}, t)[4] ]$
 
-$\hspace{1cm} [ NN(\textbf{w}, t)[1] + i NN(\textbf{w}, t)[5] ]$
+$\hspace{2.5cm} [ NN(\textbf{w}, t)[1] + i * NN(\textbf{w}, t)[5] ]$
 
 
 and then finally obtain the density matrix,
