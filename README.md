@@ -64,7 +64,7 @@ where,
 
 ## Goal
 
-A biexciton QD-system is acted upon by a Hamiltonian $\hat{H}_S$ (using a constant $\pi$-pulse and no detuning) and evolves in the presence of phonon-induced decoherence as dictated by the NZ equation. Such a setup is developed to efficiently transfer the population from the ground state to the biexciton state. *Can a PINN learn the solution to this EOM i.e. $\rho(t)$ using only the knowledge of NZ equation and the initial boundary conditions?*
+A biexciton QD-system is acted upon by a Hamiltonian $\hat{H}_S$ (using a constant $\pi$-pulse and no detuning) and evolves in the presence of phonon-induced decoherence as dictated by the NZ equation. Such a setup is developed to efficiently transfer the population from the ground state to the biexciton state. Can a PINN learn the solution to this EOM i.e. $\rho(t)$ using only the knowledge of NZ equation and the initial boundary conditions?
 
 <br>
 
@@ -117,7 +117,7 @@ $\dot{\rho}(NN(\textbf{w},t)) = |\dot{\psi}\rangle\langle\psi| + |\psi\rangle\la
 
 The total loss consists of 3 components:
 
-$\mathcal{L} = \mathcal{L}_{boundary} + \mathcal{L}_{physics} + \mathcal{L}_{norm}$
+$L = L_{boundary} + L_{physics} + L_{norm}$
 
 *   $\mathcal{L}_{boundary}$ : penalizes the initial boundary conditions to  $\rho^*(0) = diag(1,0,0)$ as,
 
