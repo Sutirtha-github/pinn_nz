@@ -47,13 +47,13 @@ where,
 *   system Hamiltonian: $\hat{H}_S$ = $$ \begin{bmatrix} \Delta & -\Omega/2 & 0 \\ -\Omega/2 & -E_b/2 & -\Omega/2 \\ 0 & -\Omega/2 & -\Delta \end{bmatrix} $$
 
 *   coupling matrix: $\hat{S}$ =
-  $$
-  \begin{bmatrix}
-  0 & 0 & 0 \\
-  0 & 1 & 0 \\
-  0 & 0 & 2
-  \end{bmatrix}
-  $$
+$$
+\begin{bmatrix}
+0 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 2
+\end{bmatrix}
+$$
 
 * $\hat{\mathcal{K}}(t,t') \rho(t') = i[\hat{S}, \{i c(t,t')\hat{U}(t,t')\hat{S}\rho(t')\} + \{H.c.\}]$
 
