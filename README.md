@@ -36,11 +36,7 @@ $\dot\rho(t) = -i[\hat{H}_S(t),\rho(t)] + \int_0^t \hat{\mathcal{K}}(t,t') \rho(
 
 where,
 
-*   system Hamiltonian: $\hat{H}_S = \begin{pmatrix}
-      \Delta & -\Omega/2 & 0 \\
-      -\Omega/2 & -E_b/2 & -\Omega/2 \\
-      0 & -\Omega/2 & -\Delta
-      \end{pmatrix}$
+*   system Hamiltonian: $\hat{H}_S = \begin{pmatrix} \Delta & -\Omega/2 & 0 \\ -\Omega/2 & -E_b/2 & -\Omega/2 \\ 0 & -\Omega/2 & -\Delta \end{pmatrix}$
 
 *   coupling matrix: $\hat{S} = \begin{pmatrix}
                      0 & 0 & 0 \\
@@ -81,11 +77,7 @@ Let the neural network take time instance $t$ as the input and output the wavefu
 *   Input : $t \in ℝ$
 *   Output : $NN(\textbf{w}, t) \in ℝ^6$
 
-If $\psi(t)$ = $$\begin{bmatrix}
-                  c_0(t) \\\
-                  c_1(t) \\\
-                  c_2(t)
-                  \end{bmatrix}$$,   ${c_0, c_1, c_2} \in ℂ$
+If $\psi(t)$ = $\begin{bmatrix} c_0(t) \\ c_1(t) \\ c_2(t) \end{bmatrix}$,   ${c_0, c_1, c_2} \in ℂ$
 
 then,
 
