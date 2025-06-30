@@ -36,7 +36,7 @@ $\dot\rho(t) = -i[\hat{H}_S(t),\rho(t)] + \int_0^t \hat{\mathcal{K}}(t,t') \rho(
 
 where,
 
-*   system Hamiltonian: $\hat{H}_S = \begin{pmatrix} \Delta & -\Omega/2 & 0 \\ -\Omega/2 & -E_b/2 & -\Omega/2 \\ 0 & -\Omega/2 & -\Delta \end{pmatrix}$
+*   system Hamiltonian: $\hat{H}_S$ = '''math \begin{bmatrix} \Delta & -\Omega/2 & 0 \\ -\Omega/2 & -E_b/2 & -\Omega/2 \\ 0 & -\Omega/2 & -\Delta \end{bmatrix}'''
 
 *   coupling matrix: $\hat{S} = \begin{pmatrix}
                      0 & 0 & 0 \\
