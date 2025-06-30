@@ -38,11 +38,11 @@ where,
                                                                   
 *   system Hamiltonian: $\hat{H}_s = \Delta(t) * M_z - 0.5 * \Omega(t) * M_x - 0.5 * E_b * M$
   
-    **  $M_z = [[1, 0, 0], [0, 0, 0], [0, 0, -1]]$
+    *  $M_z = [[1, 0, 0], [0, 0, 0], [0, 0, -1]]$
 
-    **  $M_x = [[0, 1 ,0], [1, 0, 1], [0, 1, 0]]$
+    *  $M_x = [[0, 1 ,0], [1, 0, 1], [0, 1, 0]]$
 
-    **  $M = [[0, 0, 0], [0, 1, 0], [0, 0, 0]]$
+    *  $M = [[0, 0, 0], [0, 1, 0], [0, 0, 0]]$
                                     
 *   coupling matrix: $\hat{S} = diag(0,1,2)$ 
   
@@ -93,9 +93,9 @@ From these 6 outputs we can construct $\psi$ as,
 
 $\psi(NN(\textbf{w},t)) = [\hspace{.1cm} NN(\bf{w}, t)[0] + i * NN(\textbf{w}, t)[3] \hspace{.1cm}]$
 
-$\hspace{2.75cm} [\hspace{.1cm}NN(\textbf{w}, t)[1] + i * NN(\textbf{w}, t)[4] \hspace{.1cm}]$
+$\hspace{2.76cm} [\hspace{.1cm}NN(\textbf{w}, t)[1] + i * NN(\textbf{w}, t)[4] \hspace{.1cm}]$
 
-$\hspace{2.75cm} [\hspace{.1cm} NN(\textbf{w}, t)[1] + i * NN(\textbf{w}, t)[5] \hspace{.1cm}]$
+$\hspace{2.76cm} [\hspace{.1cm} NN(\textbf{w}, t)[1] + i * NN(\textbf{w}, t)[5] \hspace{.1cm}]$
 
 
 and then finally obtain the density matrix,
