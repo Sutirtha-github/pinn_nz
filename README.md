@@ -82,10 +82,10 @@ Let the neural network take time instance $t$ as the input and output the wavefu
 *   Output : $NN(\textbf{w}, t) \in ℝ^6$
 
 If $\psi(t)$ = $$\begin{bmatrix}
-c_0(t) \\
-c_1(t) \\
-c_2(t)
-\end{bmatrix}$$,   ${c_0, c_1, c_2} \in ℂ$
+                  c_0(t) \\\
+                  c_1(t) \\\
+                  c_2(t)
+                  \end{bmatrix}$$,   ${c_0, c_1, c_2} \in ℂ$
 
 then,
 
