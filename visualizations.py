@@ -3,6 +3,15 @@ import matplotlib.pyplot as plt
 
 
 def plot_numerical(times_cpu, rho_diag_cpu, total_cpu, D):
+    '''
+    Plot the dynamics obtained by numerically solving the NZ eq.
+
+    Args:
+        times_cpu: list of time points (stored in cpu) used from 0 to pulse duration
+        rho_diag_cpu: population of ground state, exciton and biexciton (diagonal elements of density matrix) for all time points (stored in cpu)
+        total_cpu: sum of individual populations i.e. trace of density matrix for all times (stored in cpu)
+        D: pulse duration
+    '''
     plt.figure(figsize=(8, 6))
     plt.rcParams['font.size'] = 15
     plt.plot(times_cpu, rho_diag_cpu[:, 0], label=r'$\rho_{00}$', linewidth=2)
@@ -20,7 +29,17 @@ def plot_numerical(times_cpu, rho_diag_cpu, total_cpu, D):
 
 
 def plot_midtraining(t_num, rho_diag_num, t_test, rho_pred, D):
+    '''
+    Plot the learnt dynamics along with the numerically obtained dynamics at different epochs of the training
 
+    Args:
+        t_num: list of time points [0,D] used in numerical solution
+        rho_diag_num: diagonal elements obtained from numerical solutions for all time points
+        t_test: time points used durinf inference
+        rho_pred: predicted density matrix for all time instances in t_test
+        D: pulse duration
+
+    '''
     rho_pred = rho_pred.detach()
     
     plt.rcParams['font.size'] = 12.5
@@ -59,5 +78,4 @@ def plot_midtraining(t_num, rho_diag_num, t_test, rho_pred, D):
     axes[3].hlines(y=1, xmin=0, xmax=D, linestyle='dotted', color='black')
 
     plt.tight_layout()
-
     plt.show()
