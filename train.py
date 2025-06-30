@@ -21,7 +21,7 @@ M_11 = torch.tensor([[0,0,0],[0,1,0],[0,0,0]], dtype=torch.complex64, device=dev
 S = torch.tensor([[0,0,0],[0,1,0],[0,0,2]], dtype=torch.complex64, device=device)
 
 
-# System Hamiltonian
+# System Hamiltonian (constant pi-pulse)
 def rabi_const(om_b): return om_b * sqrt(torch.tensor(6.0))
 def hamilton(om_b): return rabi_const(om_b) / 2 * Mx - 2 * om_b * M_11
 
@@ -138,19 +138,42 @@ def memory_kernel(t, tp, rho_tp, Hs, A, T, omega_c):
     return 1j * (S @ term - term @ S)
 
 
-# Training 
+
 def train_nz_pinn(t, rho_diag, D=0.1, t_intervals = 150, A=0.0112, T=100, omega_c=3.04,
                   n_layers=4, n_hidden=32, epochs=3501, lr=1e-2, plot_interval=500):
+    '''
+    Train the PINN to learn NZ EOM
 
+    Args:
+        t: time points of numerical solution 
+        rho_diag: population (diagonal elements of density matrix) of ground, exciton and biexciton levels at each t
+        D: pulse duration (ps)
+        t_intervals: # time points in [0,D] for training
+        A: system-bath coupling strength (ps/K)
+        T: bath temperature (K)
+        omega_c: bath cutoff frequency (1/ps)
+        n_layers: # hidden layers
+        n_hidden: # units per hidden layer
+        epochs: # training iterations
+        lr: learning rate
+        plot_interval: frequency of plotting learnt dynamics
+
+    Returns:
+        trained model
+    '''
     torch.manual_seed(2025)
 
     dt = D / t_intervals
-    t_test = torch.linspace(0, D, t_intervals, device=device).view(-1, 1)
-
+    
+    # Define the system Hamiltonian                  
     om_b = pi / D
     Hs = hamilton(om_b)
 
+    # Initialize the neural network
     pinn = WavefunctionNN(n_hidden, n_layers).to(device)
+
+    # Define the relevant temporal points                 
+    t_test = torch.linspace(0, D, t_intervals, device=device).view(-1, 1)
     t_boundary = torch.tensor([[0.0]], device=device, requires_grad=True)
     t_physics = torch.linspace(0, D, t_intervals, device=device).view(-1, 1).requires_grad_(True)
 
@@ -160,22 +183,31 @@ def train_nz_pinn(t, rho_diag, D=0.1, t_intervals = 150, A=0.0112, T=100, omega_
 
         optimiser.zero_grad()
 
+        # Boundary loss
         rho0_pred = pinn(t_boundary)
         loss_b = torch.mean((rho0_pred[:, 0] - 1.0) ** 2 + torch.sum(rho0_pred[:, 1:] ** 2, dim=1))
 
+        # Physics loss
+        
+        # Convert pinn outputs into density matrix format
         psi_flat = pinn(t_physics)
         psi_r = psi_flat[:, :3].view(-1, 3, 1)
         psi_i = psi_flat[:, 3:].view(-1, 3, 1)
         psi = torch.complex(psi_r, psi_i)
         rho = psi @ psi.conj().transpose(-1, -2)
 
+        # Compute gradients separately for the real and imaginary parts
         grads = [torch.autograd.grad(psi_r[:, j], t_physics, torch.ones_like(psi_r[:, j]), create_graph=True)[0] for j in range(3)]
         grads += [torch.autograd.grad(psi_i[:, j], t_physics, torch.ones_like(psi_i[:, j]), create_graph=True)[0] for j in range(3)]
-        d_psi_dt = torch.complex(torch.stack(grads[:3], dim=1), torch.stack(grads[3:], dim=1)).view(-1, 3, 1)
 
+        # Combine them to calculate the time derivative of density matrix
+        d_psi_dt = torch.complex(torch.stack(grads[:3], dim=1), torch.stack(grads[3:], dim=1)).view(-1, 3, 1)
         d_rho_dt = psi @ d_psi_dt.conj().transpose(-1, -2) + d_psi_dt @ psi.conj().transpose(-1, -2)
+
+        # Compute the von-Neumann (first) term of the NZ eq.
         first_terms = calc_liouville(Hs, rho)
 
+        # Compute the integral of memory (second) term of the NZ eq.
         second_terms = []
         for j in range(len(t_physics)):
             kernel_term = memory_kernel(t_physics[j], t_physics[0], rho[0], Hs, A, T, omega_c)
@@ -185,7 +217,11 @@ def train_nz_pinn(t, rho_diag, D=0.1, t_intervals = 150, A=0.0112, T=100, omega_
         second_terms = dt * torch.stack(second_terms)
 
         loss_p = torch.mean(torch.abs(d_rho_dt - first_terms - second_terms) ** 2)
+
+        # Norm loss
         loss_norm = torch.mean((torch.real(torch.vmap(torch.trace)(rho)) - 1.0) ** 2)
+
+        # Total loss
         loss = loss_b + 0.001 * loss_p + loss_norm
         
         loss.backward()
