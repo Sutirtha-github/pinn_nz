@@ -1,4 +1,4 @@
-# **Learning the Nakajima-Zwanzig Equation Of Motion using Physics Informed Neural Network**
+# **Deep Learning the Nakajima-Zwanzig Equation Of Motion using Physics Informed Neural Network**
 
 <br><br>
 
@@ -76,48 +76,51 @@ We shall implement and train a fully connected dense neural network that directl
 
 ## Architecture
 
-Let the neural network take time instance $t$ as the input and output the wavefunction $\psi(t)$ which is a vector of shape $3\times1$. But in order to deal with the complex probability amplitudes of $\psi$, let the neural network output the real and imaginary parts of each of these 3 amplitudes separately, thereby producing 6 outputs in total.
+The exciton and biexciton model are designed differently. The general idea is that the neural network takes time instance $t$ as the input and output elements of the density matrix of the system. For the exciton model 3 outputs suffices while for the biexciton model 8 outputs are required as mentioned below.
 
 *   Input : $t \in ℝ$
-*   Output : $NN(\textbf{w}, t) \in ℝ^6$
+*   Output : $NN_{ex}(\textbf{w}, t) =  \bigg[ \rho_{00}^{\text{ex}}(t_i),  Re[\rho_{01}^{\text{ex}}(t_i)],  Im[\rho_{01}^{\text{ex}}(t_i)]\bigg]   \in ℝ^3$
 
-If $\psi(t) = \begin{pmatrix}
-c_0(t) \\
-c_1(t) \\
-c_2(t)
-\end{pmatrix}, \{c_0, c_1, c_2\} \in ℂ$
+$\hspace{2cm} NN_{biex}(\textbf{w}, t) = \bigg[ \rho_{00}^{\text{biex}}(t_i),  \rho_{11}^{\text{biex}}(t_i),  Re[\rho_{01}^{\text{biex}}(t_i)],  Im[\rho_{01}^{\text{biex}}(t_i)], Re[\rho_{02}^{\text{biex}}(t_i)], Im[\rho_{02}^{\text{biex}}(t_i)],  $
+$\hspace{10cm} Re[\rho_{12}^{\text{biex}}(t_i)],  Im[\rho_{12}^{\text{biex}}(t_i)] \bigg]   \in  ℝ^8$
 
-then,
+The complete density matrix for the exciton is constructed as follows
 
-*   $NN(\textbf{w}, t)[0] = Re[c_0(t)], \hspace{1cm} NN(\textbf{w}, t)[3] = Im[c_0(t)]$
+*   $\rho_{01} = Re[\rho_{01}] + Im[\rho_{01}]$
 
-*   $NN(\textbf{w}, t)[1] = Re[c_1(t)], \hspace{1cm} NN(\textbf{w}, t)[4] = Im[c_1(t)]$
+*   $\rho_{10} = \rho_{01}^*$
 
-*   $NN(\textbf{w}, t)[2] = Re[c_2(t)], \hspace{1cm} NN(\textbf{w}, t)[5] = Im[c_2(t)]$
+*   $\rho_{11} = 1 - \rho_{00}$
 
-From these 6 outputs we can construct $\psi$ as,
+*   $\rho = [[\rho_{00}, \rho_{01}], [\rho_{10},\rho_{11}]]$
 
-$\psi(NN(\textbf{w},t)) = \begin{pmatrix}
-NN(\textbf{w}, t)[0] + i\ NN(\textbf{w}, t)[3]\\
-NN(\textbf{w}, t)[1] + i\ NN(\textbf{w}, t)[4]\\
-NN(\textbf{w}, t)[1] + i\ NN(\textbf{w}, t)[5]
-\end{pmatrix}$
+while for the biexciton,
 
-and then finally obtain the density matrix,
+*   $\rho_{01} = Re[\rho_{01}] + Im[\rho_{01}]$
 
-$\rho(NN(\textbf{w},t)) = |\psi(NN(\textbf{w},t))\rangle\langle\psi(NN(\textbf{w},t))|$
+*   $\rho_{02} = Re[\rho_{02}] + Im[\rho_{02}]$
 
-Using *torch.autograd's grad* function we can calculate the gradient of the density matrix.
+*   $\rho_{12} = Re[\rho_{12}] + Im[\rho_{12}]$
 
-$\dot{\rho}(NN(\textbf{w},t)) = |\dot{\psi}\rangle\langle\psi| + |\psi\rangle\langle\dot{\psi}|$
+*   $\rho_{10} = \rho_{01}^*$
 
+*   $\rho_{20} = \rho_{02}^*$
+
+*   $\rho_{21} = \rho_{12}^*$
+
+*   $\rho_{22} = 1 - \rho_{00} - \rho_{11}$
+
+*   $\rho = [[\rho_{00}, \rho_{01}, \rho_{02}], [\rho_{10},\rho_{11}, \rho_{12}], [\rho_{20}, \rho_{21}, \rho_{22}]]$
+
+
+Using *torch.autograd's grad* function we can calculate the gradient of the density matrix. But the real and imaginary parts need to be adressed separately and then combined again as before.
 <br>
 
 ## Loss function
 
-The total loss consists of 3 components:
+The total loss consists of 2 components:
 
-$\mathcal{L} = \mathcal{L}_{boundary} + \mathcal{L}_{physics} + \mathcal{L}_{norm}$
+$\mathcal{L} = \mathcal{L}_{boundary} + \lambda \mathcal{L}_{physics} $
 
 *   $\mathcal{L}_{boundary}$ : penalizes the initial boundary conditions to  $\rho^*(0) = diag(1,0,0)$ as,
 
@@ -125,10 +128,7 @@ $\mathcal{L} = \mathcal{L}_{boundary} + \mathcal{L}_{physics} + \mathcal{L}_{nor
 
 *   $\mathcal{L}_{physics}$ : penalizes the Volterra equation i.e.
 
-    $min \ \sum_{t \in [0,D]}||\dot\rho(NN(\textbf{w},t)) + i[\hat{H}_S(t),\rho(NN(\textbf{w},t))] - \int_0^t \hat{\mathcal{K}}(t,t') \rho(NN(\textbf{w},t')) dt' ||^2 / N$
+    $min \ \sum_{t \in [0,D]}||\dot\rho(NN(\textbf{w},t)) + i[\hat{H}_S(t),\rho(NN(\textbf{w},t))] - \int_0^t \hat{\mathcal{K}}(t,t') \rho(NN(\textbf{w},t')) dt' ||^2 $
 
-*   $\mathcal{L}_{norm}$ : penalizes the trace of the density matrix to ensure normalization of the wavefunction (sum of populations = 1) .
-
-    $min \ \sum_{t \in [0,D]}||Tr(\rho(NN(\textbf{w}, t)) - 1.0 ||^2 / N$
 
 where, $||A_{3\times3}||^2 = \sum_{i,j} A_{ij}^2 / 9$

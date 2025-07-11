@@ -3,7 +3,7 @@ from scipy.linalg import expm
 from tqdm import tqdm
 from visualizations import plot_numerical
 
-class NZSolver:
+class NZSolverBiex:
     def __init__(self, D=0.1, steps=500, A=0.0112, omega_c=3.04, T=100, device='cuda' if torch.cuda.is_available() else 'cpu'):
         self.hbar = 1.0546e-22      # J*ps
         self.kb = 1.3806e-23        # J/K
@@ -18,10 +18,10 @@ class NZSolver:
         self.device = device
 
         # Define operators
-        self.Mx = torch.tensor([[0, -1, 0], [-1, 0, -1], [0, -1, 0]], dtype=torch.complex128, device=device)
-        self.Mz = torch.tensor([[1, 0, 0], [0, 0, 0], [0, 0, -1]], dtype=torch.complex128, device=device)
-        self.M_11 = torch.tensor([[0, 0, 0], [0, 1, 0], [0, 0, 0]], dtype=torch.complex128, device=device)
-        self.S = torch.tensor([[0, 0, 0], [0, 1, 0], [0, 0, 2]], dtype=torch.complex128, device=device)
+        self.Mx = torch.tensor([[0, -1, 0], [-1, 0, -1], [0, -1, 0]], dtype=torch.cfloat, device=device)
+        self.Mz = torch.tensor([[1, 0, 0], [0, 0, 0], [0, 0, -1]], dtype=torch.cfloat, device=device)
+        self.M_11 = torch.tensor([[0, 0, 0], [0, 1, 0], [0, 0, 0]], dtype=torch.cfloat, device=device)
+        self.S = torch.tensor([[0, 0, 0], [0, 1, 0], [0, 0, 2]], dtype=torch.cfloat, device=device)
 
         self.om_b = torch.pi / self.D
         self.Hs = self.rabi_const(self.om_b)/2 * self.Mx - 2 * self.om_b * self.M_11
@@ -61,7 +61,7 @@ class NZSolver:
         delta_t = t - tp
         delta_t_scalar = delta_t.item() if isinstance(delta_t, torch.Tensor) else delta_t
         U = expm((-1j * self.Hs.cpu().numpy() * delta_t_scalar))  
-        return torch.tensor(U, dtype=torch.complex128, device=self.device)
+        return torch.tensor(U, dtype=torch.cfloat, device=self.device)
 
 
     def memory_kernel(self, t, tp, rho_tp):
@@ -74,10 +74,10 @@ class NZSolver:
 
     def project_to_physical_density(self, rho):
         rho_np = rho.detach().cpu().numpy()
-        eigvals, eigvecs = torch.linalg.eigh(torch.tensor(rho_np, dtype=torch.complex128))
+        eigvals, eigvecs = torch.linalg.eigh(torch.tensor(rho_np, dtype=torch.cfloat))
         eigvals = torch.clamp(eigvals.real, min=0.0)
         eigvals /= eigvals.sum()
-        eigvals = eigvals.to(torch.complex128)
+        eigvals = eigvals.to(torch.cfloat)
         rho_proj = eigvecs @ torch.diag(eigvals) @ eigvecs.conj().T
         return rho_proj.to(self.device)
 
@@ -87,8 +87,8 @@ class NZSolver:
         rhos = []
         times = self.t
 
-        for i, t in tqdm(enumerate(times), total=len(times), desc='Solving Nakajima-Zwanzig EOM'):
-            integral_term = torch.zeros_like(rho_t, device=self.device, dtype=torch.complex128)
+        for i, t in tqdm(enumerate(times), total=len(times), desc='Solving Nakajima-Zwanzig EOM for Biexciton model'):
+            integral_term = torch.zeros_like(rho_t, device=self.device, dtype=torch.cfloat)
 
             for j, tp in enumerate(times[:i]):
                 integral_term += self.memory_kernel(t, tp, rhos[j]) * self.dt
