@@ -79,9 +79,11 @@ We shall implement and train a fully connected dense neural network that directl
 The exciton and biexciton model are designed differently. The general idea is that the neural network takes time instance $t$ as the input and output elements of the density matrix of the system. For the exciton model 3 outputs suffices while for the biexciton model 8 outputs are required as mentioned below.
 
 *   Input : $t \in ℝ$
-*   Output : $NN_{ex}(\textbf{w}, t) =  \bigg[ \rho_{00}^{\text{ex}}(t_i),  Re[\rho_{01}^{\text{ex}}(t_i)],  Im[\rho_{01}^{\text{ex}}(t_i)]\bigg]   \in ℝ^3$
+*   Output :
 
-$\hspace{2cm} NN_{biex}(\textbf{w}, t) = \bigg[ \rho_{00}^{\text{biex}}(t_i),  \rho_{11}^{\text{biex}}(t_i),  Re[\rho_{01}^{\text{biex}}(t_i)],  Im[\rho_{01}^{\text{biex}}(t_i)], Re[\rho_{02}^{\text{biex}}(t_i)], Im[\rho_{02}^{\text{biex}}(t_i)],  $
+  $ \hspace{2cm} N_{ex}(\textbf{w}, t) =  \bigg[ \rho_{00}^{\text{ex}}(t_i),  Re[\rho_{01}^{\text{ex}}(t_i)],  Im[\rho_{01}^{\text{ex}}(t_i)]\bigg]   \in ℝ^3$
+
+$\hspace{2cm} NN_{biex}(\textbf{w}, t) = \bigg[ \rho_{00}^{\text{biex}}(t_i),  \rho_{11}^{\text{biex}}(t_i),  Re[\rho_{01}^{\text{biex}}(t_i)],  Im[\rho_{01}^{\text{biex}}(t_i)], Re[\rho_{02}^{\text{biex}}(t_i)], Im[\rho_{02}^{\text{biex}}(t_i)],$
 $\hspace{10cm} Re[\rho_{12}^{\text{biex}}(t_i)],  Im[\rho_{12}^{\text{biex}}(t_i)] \bigg]   \in  ℝ^8$
 
 The complete density matrix for the exciton is constructed as follows
@@ -120,7 +122,7 @@ Using *torch.autograd's grad* function we can calculate the gradient of the dens
 
 The total loss consists of 2 components:
 
-$\mathcal{L} = \mathcal{L}_{boundary} + \lambda \mathcal{L}_{physics} $
+$\mathcal{L} = L_{boundary} + \lambda \mathcal{L}_{physics} $
 
 *   $\mathcal{L}_{boundary}$ : penalizes the initial boundary conditions to  $\rho^*(0) = diag(1,0,0)$ as,
 
