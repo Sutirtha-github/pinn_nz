@@ -73,10 +73,10 @@ The exciton and biexciton model are designed differently. The general idea is th
 *   Input : $t \in ℝ$
 *   Output :
 
-$\hspace{2cm} NN_{ex}(\textbf{w}, t) =  \bigg[ \rho_{00}^{\text{ex}}(t_i),  Re[\rho_{01}^{\text{ex}}(t_i)],  Im[\rho_{01}^{\text{ex}}(t_i)]\bigg]   \in ℝ^3$
+$\hspace{2cm} NN_{ex}(\textbf{w}, t) =  \bigg[ \rho_{00}^{\text{ex}}(t),  Re[\rho_{01}^{\text{ex}}(t)],  Im[\rho_{01}^{\text{ex}}(t)]\bigg]   \in ℝ^3$
 
-$\hspace{2cm} NN_{biex}(\textbf{w}, t) = \bigg[ \rho_{00}^{\text{biex}}(t_i),  \rho_{11}^{\text{biex}}(t_i),  Re[\rho_{01}^{\text{biex}}(t_i)],  Im[\rho_{01}^{\text{biex}}(t_i)], Re[\rho_{02}^{\text{biex}}(t_i)], Im[\rho_{02}^{\text{biex}}(t_i)],$
-$\hspace{10cm} Re[\rho_{12}^{\text{biex}}(t_i)],  Im[\rho_{12}^{\text{biex}}(t_i)] \bigg]   \in  ℝ^8$
+$\hspace{2cm} NN_{biex}(\textbf{w}, t) = \bigg[ \rho_{00}^{\text{biex}}(t),  \rho_{11}^{\text{biex}}(t),  Re[\rho_{01}^{\text{biex}}(t)],  Im[\rho_{01}^{\text{biex}}(t)], Re[\rho_{02}^{\text{biex}}(t)], Im[\rho_{02}^{\text{biex}}(t)],$
+$\hspace{10cm} Re[\rho_{12}^{\text{biex}}(t)],  Im[\rho_{12}^{\text{biex}}(t)] \bigg]   \in  ℝ^8$
 
 The complete density matrix for the exciton is constructed as follows
 
