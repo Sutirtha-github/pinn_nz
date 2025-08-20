@@ -12,6 +12,8 @@ def gen_noisy_data(rhos, D=1, M=50, t_intervals=1001, scale=1e-2, seed=2025):
     t_intervals : number of timepoints used in numerical simulation
     scale : noise factor used to scale normal distribution
     seed : reproducibility parameter
+
+    Returns : random time points and noisy density matrices at those instaces
     """
     torch.manual_seed(seed)
 
