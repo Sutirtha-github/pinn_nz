@@ -133,6 +133,26 @@ def plot_midtrain_sim(t_num, rho_diag_num, t_test, rho_pred, D, sys='b'):
         plt.show()
 
 
+def plot_test(times, rho_diag, t_test, results):
+    plt.rcParams['font.size'] = 12.5
+
+    fig, axes = plt.subplots(1,2, figsize=(8,3))
+
+    axes[0].plot(times, rho_diag[:,0], label="Numerical", color="black", linewidth=1)
+    axes[0].scatter(t_test, results[:, 0], label="PINN inference", color="tab:red", marker='*', s=45)
+    axes[0].set_xlabel("t (ps)")
+    axes[0].set_ylabel(r"$\rho_{00} (t)$")
+    axes[0].legend(loc='lower left')
+
+    axes[1].plot(times, rho_diag[:,1], label="Numerical", color="black", linewidth=1)
+    axes[1].scatter(t_test, 1-results[:, 0], label="PINN inference", color="tab:blue", marker='*', s=45)
+    axes[1].set_xlabel("t (ps)")
+    axes[1].set_ylabel(r"$\rho_{11} (t)$")
+
+    plt.tight_layout()
+    plt.show()
+
+
 def plot_midtrain_inv_1(t_obs, rho_obs, rho_obs_pred, alpha0, alpha_list):
 
     fig, axes = plt.subplots(1, 4, figsize=(16, 3))
