@@ -22,7 +22,7 @@ def plot_numerical(times_cpu, rho_diag_cpu, total_cpu, D, sys='b'):
         plt.plot(times_cpu, rho_diag_cpu[:, 1], label=r'$\rho_{11}$', color="green", linewidth=2)
         plt.plot(times_cpu, rho_diag_cpu[:, 2], label=r'$\rho_{22}$', color="blue", linewidth=2)
         plt.plot(times_cpu, total_cpu, '--', label=r'Tr($\rho$)', color='black', linewidth=1.5)
-        plt.xlabel('t (ps)')
+        plt.xlabel('Time (ps)')
         plt.ylabel('Population')
         plt.title('Numerical NZ solution of Biexciton')
         plt.xlim(0, D)
@@ -34,7 +34,7 @@ def plot_numerical(times_cpu, rho_diag_cpu, total_cpu, D, sys='b'):
     else:
         plt.plot(times_cpu, rho_diag_cpu[:, 0], label=r'$\rho_{00}$', color="tab:red",linewidth=2)
         plt.plot(times_cpu, rho_diag_cpu[:, 1], label=r'$\rho_{11}$', color="tab:blue", linewidth=2)
-        plt.xlabel('t (ps)')
+        plt.xlabel('Time (ps)')
         plt.ylabel('Population')
         plt.title('Numerical NZ solution of Exciton')
         plt.xlim(0, D)
@@ -44,7 +44,7 @@ def plot_numerical(times_cpu, rho_diag_cpu, total_cpu, D, sys='b'):
         plt.show()
 
 
-def plot_midtraining(t_num, rho_diag_num, t_test, rho_pred, D, sys='b'):
+def plot_midtrain_sim(t_num, rho_diag_num, t_test, rho_pred, D, sys='b'):
     '''
     Plot the learnt dynamics along with the numerically obtained dynamics at different epochs of the training
 
@@ -73,7 +73,7 @@ def plot_midtraining(t_num, rho_diag_num, t_test, rho_pred, D, sys='b'):
 
         axes[0].plot(t_num, rho_diag_num[:,0], label="Numerical solution", color="black", linewidth=2)
         axes[0].plot(t_test_interp, rho00_spline(t_test_interp), label="PINN solution", color="tab:red", linewidth=2)
-        axes[0].set_xlabel("Time (ps)")
+        axes[0].set_xlabel("t (ps)")
         axes[0].set_ylabel(r"$\rho_{00}(t)$")
         axes[0].set_xlim(0,D)
         axes[0].set_ylim(0,1)
@@ -82,7 +82,7 @@ def plot_midtraining(t_num, rho_diag_num, t_test, rho_pred, D, sys='b'):
         
         axes[1].plot(t_num, rho_diag_num[:, 1], label="Numerical solution", color="black", linewidth=2)
         axes[1].plot(t_test_interp, rho11_spline(t_test_interp), label="PINN solution", color="tab:green", linewidth=2)
-        axes[1].set_xlabel("Time (ps)")
+        axes[1].set_xlabel("t (ps)")
         axes[1].set_ylabel(r"$\rho_{11}(t)$")
         axes[1].set_xlim(0,D)
         axes[1].set_ylim(0,1)
@@ -90,7 +90,7 @@ def plot_midtraining(t_num, rho_diag_num, t_test, rho_pred, D, sys='b'):
 
         axes[2].plot(t_num, rho_diag_num[:, 2], label="Numerical solution", color="black", linewidth=2)
         axes[2].plot(t_test_interp, rho22_spline(t_test_interp), label="PINN solution", color="tab:blue", linewidth=2)
-        axes[2].set_xlabel("Time (ps)")
+        axes[2].set_xlabel("t (ps)")
         axes[2].set_ylabel(r"$\rho_{22}(t)$")
         axes[2].set_xlim(0,D)
         axes[2].set_ylim(0,1)
@@ -114,7 +114,7 @@ def plot_midtraining(t_num, rho_diag_num, t_test, rho_pred, D, sys='b'):
 
         axes[0].plot(t_num, rho_diag_num[:,0], label="Numerical solution", color="black", linewidth=2)
         axes[0].plot(t_test_interp, rho00_spline(t_test_interp), label="PINN solution", color="tab:red", linewidth=2)
-        axes[0].set_xlabel("Time (ps)")
+        axes[0].set_xlabel("t (ps)")
         axes[0].set_ylabel(r"$\rho_{00}(t)$")
         axes[0].set_xlim(0,D)
         axes[0].set_ylim(0,1)
@@ -122,7 +122,7 @@ def plot_midtraining(t_num, rho_diag_num, t_test, rho_pred, D, sys='b'):
 
         axes[1].plot(t_num, rho_diag_num[:, 1], label="Numerical solution", color="black", linewidth=2)
         axes[1].plot(t_test_interp, rho11_spline(t_test_interp), label="PINN solution", color="tab:blue", linewidth=2)
-        axes[1].set_xlabel("Time (ps)")
+        axes[1].set_xlabel("t (ps)")
         axes[1].set_ylabel(r"$\rho_{11}(t)$")
         axes[1].set_xlim(0,D)
         axes[1].set_ylim(0,1)
@@ -131,3 +131,88 @@ def plot_midtraining(t_num, rho_diag_num, t_test, rho_pred, D, sys='b'):
         plt.tight_layout()
 
         plt.show()
+
+
+def plot_midtrain_inv_1(t_obs, rho_obs, rho_obs_pred, alpha0, alpha_list):
+
+    fig, axes = plt.subplots(1, 4, figsize=(16, 3))
+
+    axes[0].scatter(t_obs, torch.real(rho_obs[:,0,0]), label="Noisy data", alpha=0.6, linewidth=2, color="tab:red")
+    axes[0].plot(t_obs, rho_obs_pred[:, 0], label="PINN solution", color="tab:red", linewidth=2)
+    axes[0].set_xlabel("t (ps)")
+    axes[0].set_ylabel(r"$\rho_{00} (t)$")
+    axes[0].legend()
+
+    axes[1].scatter(t_obs, torch.real(rho_obs[:,0,1]), label="Noisy data", alpha=0.6, linewidth=2, color="tab:blue")
+    axes[1].plot(t_obs, rho_obs_pred[:, 1], label="PINN solution", color="tab:blue", linewidth=2)
+    axes[1].set_xlabel("t (ps)")
+    axes[1].set_ylabel(r"Re $[\rho_{01} (t)]$")
+    axes[1].legend()
+    
+    axes[2].scatter(t_obs, torch.imag(rho_obs[:,0,1]), label="Noisy data", alpha=0.6, linewidth=2, color="tab:green")
+    axes[2].plot(t_obs, rho_obs_pred[:, 2], label="PINN solution", color="tab:green", linewidth=2)
+    axes[2].set_xlabel("t (ps)")
+    axes[2].set_ylabel(r"Im $[\rho_{01} (t)]$")
+    axes[2].legend()
+
+    axes[3].plot(alpha_list, label="PINN estimate", color="darkorange", linewidth=2)
+    axes[3].hlines(alpha0, 0, len(alpha_list), label=r"True $\alpha$", color="black", linewidth=2)
+    axes[3].set_ylabel(r"$\alpha$")
+    axes[3].set_xlabel("Training step")
+    axes[3].legend()
+
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_midtrain_inv_2(t_obs, rho_obs, rho_obs_pred, v_c0, v_c_list):
+
+    fig, axes = plt.subplots(1, 4, figsize=(16, 3))
+
+    axes[0].scatter(t_obs, torch.real(rho_obs[:,0,0]), label="Noisy data", alpha=0.6, linewidth=2, color="tab:red")
+    axes[0].plot(t_obs, rho_obs_pred[:, 0], label="PINN solution", color="tab:red", linewidth=2)
+    axes[0].set_xlabel("t (ps)")
+    axes[0].set_ylabel(r"$\rho_{00} (t)$")
+    axes[0].legend()
+
+    axes[1].scatter(t_obs, torch.real(rho_obs[:,0,1]), label="Noisy data", alpha=0.6, linewidth=2, color="tab:blue")
+    axes[1].plot(t_obs, rho_obs_pred[:, 1], label="PINN solution", color="tab:blue", linewidth=2)
+    axes[1].set_xlabel("t (ps)")
+    axes[1].set_ylabel(r"Re $[\rho_{01} (t)]$")
+    axes[1].legend()
+    
+    axes[2].scatter(t_obs, torch.imag(rho_obs[:,0,1]), label="Noisy data", alpha=0.6, linewidth=2, color="tab:green")
+    axes[2].plot(t_obs, rho_obs_pred[:, 2], label="PINN solution", color="tab:green", linewidth=2)
+    axes[2].set_xlabel("t (ps)")
+    axes[2].set_ylabel(r"Im $[\rho_{01} (t)]$")
+    axes[2].legend()
+
+
+    axes[3].plot(v_c_list, label="PINN estimate", color="darkorange", linewidth=2)
+    axes[3].hlines(v_c0, 0, len(v_c_list), label=r"True $\omega_c$", color="black", linewidth=2)
+    axes[3].set_ylabel(r"$\omega_c$")
+    axes[3].set_xlabel("Training step")
+    axes[3].legend()
+
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_sensitivity(dc_dalpha, dc_domega_c):
+    plt.rcParams['font.size'] = 15
+    fig, axs = plt.subplots(1, 2, figsize=(10, 4))
+
+    cf1 = axs[0].imshow(dc_dalpha.detach().numpy(), extent=[0, 5, 0, 5], origin='lower', aspect='auto', cmap='plasma')
+    axs[0].set_title(r"(a)  $∂c(t, t')/∂α$")
+    axs[0].set_xlabel("t'")
+    axs[0].set_ylabel("t")
+    fig.colorbar(cf1, ax=axs[0])
+
+    cf2 = axs[1].imshow(dc_domega_c.detach().numpy(), extent=[0, 5, 0, 5], origin='lower', aspect='auto', cmap='plasma')
+    axs[1].set_title(r"(b)  $∂ c(t, t')/∂ω_c$")
+    axs[1].set_xlabel("t'")
+    axs[1].set_ylabel("t")
+    fig.colorbar(cf2, ax=axs[1])
+
+    plt.tight_layout()
+    plt.show()

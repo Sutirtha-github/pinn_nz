@@ -4,10 +4,10 @@ from tqdm import tqdm
 from visualizations import plot_numerical
 
 class NZSolverBiex:
-    def __init__(self, D=0.1, steps=500, A=0.0112, omega_c=3.04, T=100, device='cuda' if torch.cuda.is_available() else 'cpu'):
+    def __init__(self, D=1, steps=1000, alpha=0.126, omega_c=3.04, T=10, device='cuda' if torch.cuda.is_available() else 'cpu'):
         self.hbar = 1.0546e-22      # J*ps
         self.kb = 1.3806e-23        # J/K
-        self.A = A                  # ps/K
+        self.alpha = alpha                  # ps/K
         self.omega_c = omega_c      # 1/ps
         self.T = T                  # K
         self.beta = self.hbar / (self.kb * self.T)
@@ -41,27 +41,21 @@ class NZSolverBiex:
         delta_t = t - tp
 
         def spectral_density(omega):
-            return self.A * omega**3 * torch.exp(-omega**2 / self.omega_c**2)
+            return 2*self.alpha/self.omega_c**2 * omega**3 * torch.exp(-omega**2 / self.omega_c**2)
 
         def n_beta(omega):
             exp_term = torch.exp(self.beta * omega)
-            return 1.0 / (exp_term - 1.0 + 1e-10)
+            return 1.0 / (exp_term - 1.0 + 1e-15)
 
         spec = spectral_density(omega)
         nb = n_beta(omega)
         phase = torch.exp(1j * omega * delta_t)
-
         integrand = nb * spec * phase
-        corr = torch.trapz(integrand, dx=domega)
-
-        return corr
+        return torch.sum(integrand, dim=-1) * domega
 
 
     def time_ordered_propagator(self, t, tp):
-        delta_t = t - tp
-        delta_t_scalar = delta_t.item() if isinstance(delta_t, torch.Tensor) else delta_t
-        U = expm((-1j * self.Hs.cpu().numpy() * delta_t_scalar))  
-        return torch.tensor(U, dtype=torch.cfloat, device=self.device)
+        return torch.matrix_exp(-1j * self.Hs * (t - tp))
 
 
     def memory_kernel(self, t, tp, rho_tp):
