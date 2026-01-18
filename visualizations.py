@@ -142,11 +142,15 @@ def plot_test(times, rho_diag, t_test, results):
     axes[0].scatter(t_test, results[:, 0], label="PINN inference", color="tab:red", marker='*', s=45)
     axes[0].set_xlabel("t (ps)")
     axes[0].set_ylabel(r"$\rho_{00} (t)$")
+    axes[0].set_ylim(0,1)
+    axes[0].set_xlim(0,1)
     axes[0].legend(loc='lower left')
 
     axes[1].plot(times, rho_diag[:,1], label="Numerical", color="black", linewidth=1)
     axes[1].scatter(t_test, 1-results[:, 0], label="PINN inference", color="tab:blue", marker='*', s=45)
     axes[1].set_xlabel("t (ps)")
+    axes[1].set_ylim(0,1)
+    axes[1].set_xlim(0,1)
     axes[1].set_ylabel(r"$\rho_{11} (t)$")
 
     plt.tight_layout()
